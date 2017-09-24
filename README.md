@@ -1,2 +1,2 @@
 # toPresent   
-Use markdown to take a presentation.
+Use markdown file to take a presentation.
