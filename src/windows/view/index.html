@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>toPresent</title>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    
+    <!-- normal script imports etc  -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <link href="../styles/main.css" rel="stylesheet" type="text/css">
+    <script src="../controllers/dragwindow.js"></script>
+</head>
+
+<body>
+    <div id="main_panel">
+        <div id="left_panel">
+            <div id="button_bar">
+                <div id="menu_btn"></div>
+                <div id="drag_title" style="-webkit-app-region: drag"></div>
+            </div>
+            <textarea id="md_input"></textarea>
+            <div id="center_line">
+
+            </div>
+        </div>
+
+        <div id="right_panel">
+            <div id="button_bar">
+                <div id="close_btn"></div>
+                <div id="max_btn"></div>
+                <div id="min_btn"></div>
+                <div id="drag_title" style="-webkit-app-region: drag"></div>
+            </div>
+            <div id="md_preview"></div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    var marked = require('marked');
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false
+    });
+    const {
+        remote
+    } = require('electron')
+    var isBig = true;
+    window.onload = function () {
+        drag();
+    }
+    var close_btn = document.getElementById("close_btn");
+    var max_btn = document.getElementById("max_btn");
+    var min_btn = document.getElementById("min_btn");
+    close_btn.onclick = function () {
+        console.log("close");
+        remote.BrowserWindow.getFocusedWindow().close();
+    }
+    max_btn.onclick = function () {
+        if (isBig) {
+            remote.BrowserWindow.getFocusedWindow().maximize();
+        } else {
+            remote.BrowserWindow.getFocusedWindow().unmaximize();
+        }
+        isBig = !isBig;
+        console.log("max");
+    }
+    min_btn.onclick = function () {
+        remote.BrowserWindow.getFocusedWindow().minimize();
+        console.log("min");
+    }
+    $('#md_input').bind('input', function () {
+        document.getElementById('md_preview').innerHTML =
+            marked($("#md_input").val());
+    });
+</script>
+
+</html>

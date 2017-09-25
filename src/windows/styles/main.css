@@ -1,0 +1,110 @@
+html, body{
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+#main_panel{
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+#left_panel{
+    height: 100%;
+    width: 50%;
+    background-color: #F3F3F3;
+    float: left;
+}
+
+#center_line{
+    height: calc(100% - 40px);
+    width: 4px;
+    background-color: #F3F3F3;
+    float: right;
+    cursor: w-resize;
+}
+
+#right_panel{
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    float: right;
+}
+
+#button_bar{
+    height: 40px;
+    width: 100%;
+}
+
+#drag_title{
+    float:left;
+    height: 40px;
+    width: calc(100% - 93px);
+}
+
+#close_btn{
+    height: 14px;
+    width: 14px;
+    float: right;
+    margin-top: 13px;
+    margin-right: 17px;
+    background-image: url("../../../assets/close.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+#max_btn{
+    height: 14px;
+    width: 14px;
+    float: right;
+    margin-top: 13px;
+    margin-right: 17px;
+    background-image: url("../../../assets/max.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+#min_btn{
+    height: 14px;
+    width: 14px;
+    float: right;
+    margin-top: 13px;
+    margin-right: 17px;
+    background-image: url("../../../assets/min.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+#menu_btn{
+    height: 14px;
+    width: 14px;
+    float: left;
+    margin-top: 13px;
+    margin-left: 17px;
+    background-image: url("../../../assets/menu.png");
+    background-size: cover;
+    cursor: pointer;
+}
+
+#md_preview{
+    width: auto;
+    margin-left: 40px;
+    margin-top: 20px;
+    margin-right: 20px;
+    height: calc(100% - 80px);
+    font-family: "Roboto";
+}
+
+#md_input{
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
+    border: none;
+    outline:none;
+    resize:none;
+    padding-left: 40px;
+    padding-top: 20px; 
+    background-color: transparent;
+    font-family: "Roboto";
+}
