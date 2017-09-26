@@ -31,6 +31,7 @@ html, body{
     width: 50%;
     background-color: white;
     float: right;
+    text-align: center;
 }
 
 #button_bar{
@@ -89,22 +90,61 @@ html, body{
 }
 
 #md_preview{
-    width: auto;
-    margin-left: 40px;
+    width: calc(100% - 20px);
+    height: calc(100% - 75px);
+    padding-left: 40px;
+    padding-right: 40px;
     margin-top: 20px;
-    margin-right: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: calc(100% - 80px);
-    font-family: "Roboto";
+    font-family: "微软雅黑";
+    box-sizing: border-box;
+    text-align: left;
+}
+
+#md_preview img{
+    max-width: 100%;
 }
 
 #md_input{
-    width: calc(100% - 80px);
-    height: calc(100% - 80px);
+    width: calc(100% - 20px);
+    height: auto;
+    min-height: calc(100% - 80px);
+    padding-left: 40px;
+    padding-right: 40px;
     border: none;
     outline:none;
     resize:none;
-    padding-left: 40px;
-    padding-top: 20px; 
     background-color: transparent;
-    font-family: "Roboto";
+    font-family: "微软雅黑";
+    box-sizing: border-box;
+    overflow-y: visible;
+}
+
+#md_input_box{
+    width: calc(100% - 4px);
+    height: calc(100% - 75px);
+    background-color: transparent;
+    margin-top: 35px;
+    float: left;
+    text-align:center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.scrollstyle::-webkit-scrollbar-track
+{
+	background-color: #F3F3F3;
+}
+
+.scrollstyle::-webkit-scrollbar
+{
+	width: 2px;
+	background-color: #F3F3F3;
+}
+
+.scrollstyle::-webkit-scrollbar-thumb
+{
+	background-color: #C7C7C7;
 }

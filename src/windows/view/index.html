@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>toPresent</title>
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+
     <!-- normal script imports etc  -->
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
     <link href="../styles/main.css" rel="stylesheet" type="text/css">
@@ -19,7 +24,9 @@
                 <div id="menu_btn"></div>
                 <div id="drag_title" style="-webkit-app-region: drag"></div>
             </div>
-            <textarea id="md_input"></textarea>
+            <div id="md_input_box" class="scrollstyle">
+                <textarea id="md_input" style="overflow-y:hidden;" onpropertychange="this.style.height=this.scrollHeight + 'px'" oninput="this.style.height=this.scrollHeight + 'px'"></textarea>
+            </div>
             <div id="center_line">
 
             </div>
@@ -32,7 +39,7 @@
                 <div id="min_btn"></div>
                 <div id="drag_title" style="-webkit-app-region: drag"></div>
             </div>
-            <div id="md_preview"></div>
+            <div id="md_preview" class="scrollstyle"></div>
         </div>
     </div>
 
@@ -81,6 +88,16 @@
         document.getElementById('md_preview').innerHTML =
             marked($("#md_input").val());
     });
+    $('#md_input_box').scroll(function () {
+        var currY = $(this).scrollTop();
+        var postHeight = $('#md_input_box').height();
+        var scrollHeight = $('#md_input').height();
+        var scrollPercent = (currY / (scrollHeight - postHeight)) * 100;
+        console.log(scrollPercent);
+        console.log("cur" + currY);
+        console.log("Post" + postHeight);
+        console.log("scr" + scrollHeight);
+    })
 </script>
 
 </html>
