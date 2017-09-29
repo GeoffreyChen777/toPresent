@@ -111,25 +111,23 @@ html, body{
     width: calc(100% - 20px);
     height: auto;
     min-height: calc(100% - 80px);
-    padding-left: 40px;
-    padding-right: 40px;
+
     border: none;
     outline:none;
     resize:none;
     background-color: transparent;
     font-family: "微软雅黑";
-    box-sizing: border-box;
+
     overflow-y: visible;
 }
 
 #md_input_box{
     width: calc(100% - 4px);
-    height: calc(100% - 75px);
     background-color: transparent;
     margin-top: 35px;
     float: left;
     text-align:center;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
