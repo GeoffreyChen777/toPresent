@@ -19,6 +19,11 @@
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
     <link href="../styles/main.css" rel="stylesheet" type="text/css">
     <script src="../controllers/dragwindow.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../src/lib/switcher/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../../src/lib/switcher/htmleaf-demo.css">
+    <link rel="stylesheet" type="text/css" href="../../../src/lib/switcher/SimpleSwitch.css" />
+    <script type="text/javascript" src="../../../src/lib/switcher/SimpleSwitch.min.js"></script>
+
 </head>
 
 <body>
@@ -42,11 +47,16 @@
                 <div id="drag_title" style="-webkit-app-region: drag"></div>
             </div>
             <div id="md_preview" class="scrollstyle"></div>
+            <div id="preview_mode_box">
+                <input type="checkbox" data-type="simple-switch" data-material="true" />
+            </div>
         </div>
     </div>
 
 </body>
+
 <script type="text/javascript">
+    SimpleSwitch.init();
     var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {
         mode: "markdown",
         lineNumbers: true,
@@ -56,8 +66,80 @@
     });
 
     var marked = require('marked');
+
+
+    var pres_renderer = new marked.Renderer();
+    var norm_renderer = new marked.Renderer();
+    
+    norm_renderer.heading = function (text, level, raw) {
+        if (level == 1 && text == "ps") {
+            return ""
+        }
+        if (level == 1 && text == "sp") {
+            return "<hr></hr>"
+        }
+        if (level == 1 && text == "pe") {
+            return ""
+        }
+        if (level == 1 && (text == "/ps" || text == "/ps" || text == "/ps")) {
+            return '<h' +
+                level +
+                ' id="' +
+                this.options.headerPrefix +
+                raw.toLowerCase().replace(/[^\w]+/g, '-') +
+                '">' +
+                text.replace("/", "") +
+                '</h' +
+                level +
+                '>\n';
+        }
+        return '<h' +
+            level +
+            ' id="' +
+            this.options.headerPrefix +
+            raw.toLowerCase().replace(/[^\w]+/g, '-') +
+            '">' +
+            text +
+            '</h' +
+            level +
+            '>\n';
+    };
+
+    pres_renderer.heading = function (text, level, raw) {
+        if (level == 1 && text == "ps") {
+            return "<page>"
+        }
+        if (level == 1 && text == "sp") {
+            return "</page><page>"
+        }
+        if (level == 1 && text == "pe") {
+            return "</page>"
+        }
+        if (level == 1 && (text == "/ps" || text == "/ps" || text == "/ps")) {
+            return '<h' +
+                level +
+                ' id="' +
+                this.options.headerPrefix +
+                raw.toLowerCase().replace(/[^\w]+/g, '-') +
+                '">' +
+                text.replace("/", "") +
+                '</h' +
+                level +
+                '>\n';
+        }
+        return '<h' +
+            level +
+            ' id="' +
+            this.options.headerPrefix +
+            raw.toLowerCase().replace(/[^\w]+/g, '-') +
+            '">' +
+            text +
+            '</h' +
+            level +
+            '>\n';
+    };
     marked.setOptions({
-        renderer: new marked.Renderer(),
+        renderer: norm_renderer,
         gfm: true,
         tables: true,
         breaks: false,
@@ -69,44 +151,7 @@
     const {
         remote
     } = require('electron')
-    var isBig = true;
-    window.onload = function () {
-        drag();
-    }
-    var close_btn = document.getElementById("close_btn");
-    var max_btn = document.getElementById("max_btn");
-    var min_btn = document.getElementById("min_btn");
-    close_btn.onclick = function () {
-        console.log("close");
-        remote.BrowserWindow.getFocusedWindow().close();
-    }
-    max_btn.onclick = function () {
-        if (isBig) {
-            remote.BrowserWindow.getFocusedWindow().maximize();
-        } else {
-            remote.BrowserWindow.getFocusedWindow().unmaximize();
-        }
-        isBig = !isBig;
-        console.log("max");
-    }
-    min_btn.onclick = function () {
-        remote.BrowserWindow.getFocusedWindow().minimize();
-        console.log("min");
-    }
-    editor.on("change", function () {
-        document.getElementById('md_preview').innerHTML =
-            marked(editor.getValue());
-    });
-    $('#md_input_box').scroll(function () {
-        var currY = $(this).scrollTop();
-        var postHeight = $('#md_input_box').height();
-        var scrollHeight = $('#md_input').height();
-        var scrollPercent = (currY / (scrollHeight - postHeight)) * 100;
-        console.log(scrollPercent);
-        console.log("cur" + currY);
-        console.log("Post" + postHeight);
-        console.log("scr" + scrollHeight);
-    })
 </script>
+<script src="../../../src/windows/controllers/windowsctl.js"></script>
 
 </html>
