@@ -1,6 +1,14 @@
 var offsetLeft, offsetTop, timer, mouse_x, mouse_y, margin_left, margin_top;
 var to_x, to_y;
 
+function resizeHolder(){
+    try {
+        $("#holder_box").height(($("#md_preview").height() - $("#page1").height()) / 2);
+    }catch(e){
+
+    }
+}
+
 function drag() {
     var center_line = document.getElementById("center_line");
     document.onmousemove = function (e) {
@@ -25,8 +33,11 @@ function drag() {
                 right_width = main_panel_w - left_width;
                 document.getElementById("left_panel").style.width = left_width + "px";
                 document.getElementById("right_panel").style.width = right_width + "px";
+                resizeHolder();
+                
             }
         }, 5);
+
     };
     document.onmouseup = function () {
         clearInterval(timer);

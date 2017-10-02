@@ -90,7 +90,7 @@ html, body{
 }
 
 #md_preview{
-    width: calc(100% - 20px);
+    width: 100%;
     height: calc(100% - 55px);
     padding-left: 40px;
     padding-right: 40px;
@@ -101,6 +101,7 @@ html, body{
     box-sizing: border-box;
     text-align: left;
     word-wrap:break-word;
+    position: relative;
 }
 
 #md_preview img{
