@@ -129,7 +129,6 @@ function unsetPresKeyEvent() {
     $(document).off("keydown");
 }
 
-
 var preview_mode = false;
 $("#preview_mode_btn").click(function (event) {
 
