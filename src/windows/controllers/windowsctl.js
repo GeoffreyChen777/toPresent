@@ -2,14 +2,47 @@ window.onload = function () {
     drag();
 }
 
+function PresSize() {
+    var init_box = $("#init_size_box");
+    var h1 = $("<page><h1>1</h1></page>");
+    init_box.append(h1);
+    this.h1 = init_box.find("h1").css("font-size");
+    
+    var h2 = $("<page><h2>1</h2></page>");
+    init_box.append(h2);
+    this.h2 = init_box.find("h2").css("font-size");
+    
+    var h3 = $("<page><h3>1</h3></page>");
+    init_box.append(h3);
+    this.h3 = init_box.find("h3").css("font-size");
+    
+    var p = $("<page><p>1</p></page>");
+    init_box.append(p);
+    this.p = init_box.find("p").css("font-size");
+
+    
+    var li = $("<page><li>1</li></page>");
+    init_box.append(li);
+    this.li = init_box.find("li").css("font-size");
+
+};
+
+var origin_size = new PresSize();
+
+
+var preview_mode = false;
 var cur_page = 0;
 var max_page = 0;
+var origin_page_width = 0;
 
+origin_page_width = $("#md_preview").width();
 // try to resize pres holder
 
 function resizeHolder() {
     try {
         $("#holder_box").height(($("#md_preview").height() - $("#page1").height()) / 2);
+
+        scaleFont($("#md_preview").width() / origin_page_width, origin_size);
     } catch (e) {
 
     }
@@ -75,7 +108,13 @@ min_btn.onclick = function () {
     console.log("min");
 }
 editor.on("change", function () {
-    renderNormMD();
+    if(!preview_mode){
+        renderNormMD();
+    }else{
+        renderPreMD();
+        
+        showPage(cur_page, cur_page);
+    }
 });
 
 function showPage(old_page_num, new_page_num) {
@@ -129,12 +168,12 @@ function unsetPresKeyEvent() {
     $(document).off("keydown");
 }
 
-var preview_mode = false;
 $("#preview_mode_btn").click(function (event) {
 
     if (!preview_mode) {
         renderPreMD();
         showPage(0, 0);
+
     } else {
         renderNormMD();
         unsetPresKeyEvent();
@@ -152,14 +191,13 @@ $("textarea").focus(function (event) {
 });
 
 $("textarea").blur(function (event) {
-    for (var key in $(document).eventList)
-    {
-      if (key === "keydown") {
-        return;
-      }
+    for (var key in $(document).eventList) {
+        if (key === "keydown") {
+            return;
+        }
     }
     setPresKeyEvent();
-    
+
 });
 // preview window scroll follow editor window
 
@@ -174,5 +212,8 @@ editor.on("scroll", function () {
 })
 
 window.addEventListener('resize', function (e) {
+    console.log("resize");
+    var right_panel_width = $("#main_panel").width() - $("#left_panel").width();
+    $("#right_panel").width(right_panel_width);
     resizeHolder();
 })

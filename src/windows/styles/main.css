@@ -4,6 +4,12 @@ html, body{
     margin: 0px;
 }
 
+#init_size_box{
+    width: 0px;
+    height: 0px;
+    display: none;
+}
+
 #main_panel{
     height: 100%;
     width: 100%;
