@@ -1,6 +1,5 @@
 function scaleFont(scale, origin_size){
-    console.log("scale"+scale);
-    console.log("origin" + origin_size.h1);
+    console.log(scale);
     $("page>h1").css("font-size", parseFloat(origin_size.h1) * scale + "px");
     
     $("page>h2").css("font-size", parseFloat(origin_size.h2) * scale + "px");

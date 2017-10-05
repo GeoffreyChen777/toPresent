@@ -50,6 +50,9 @@
             <div id="md_preview" class="scrollstyle"></div>
             <div id="preview_mode_box">
                 <input type="checkbox" data-type="simple-switch" data-material="true" />
+                <div id="pres_play_box">
+                    <div id="pres_play_btn"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +74,7 @@
 
     var pres_renderer = new marked.Renderer();
     var norm_renderer = new marked.Renderer();
-    
+
     norm_renderer.heading = function (text, level, raw) {
         if (level == 1 && text == "ps") {
             return ""
@@ -155,4 +158,5 @@
 </script>
 <script src="../../../src/windows/controllers/prestylectl.js"></script>
 <script src="../../../src/windows/controllers/windowsctl.js"></script>
+
 </html>

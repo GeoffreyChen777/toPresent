@@ -1,3 +1,7 @@
+const { ipcMain } = require('electron');
+const path = require('path');
+const url = require('url');
+
 window.onload = function () {
     drag();
 }
@@ -7,20 +11,20 @@ function PresSize() {
     var h1 = $("<page><h1>1</h1></page>");
     init_box.append(h1);
     this.h1 = init_box.find("h1").css("font-size");
-    
+
     var h2 = $("<page><h2>1</h2></page>");
     init_box.append(h2);
     this.h2 = init_box.find("h2").css("font-size");
-    
+
     var h3 = $("<page><h3>1</h3></page>");
     init_box.append(h3);
     this.h3 = init_box.find("h3").css("font-size");
-    
+
     var p = $("<page><p>1</p></page>");
     init_box.append(p);
     this.p = init_box.find("p").css("font-size");
 
-    
+
     var li = $("<page><li>1</li></page>");
     init_box.append(li);
     this.li = init_box.find("li").css("font-size");
@@ -108,11 +112,11 @@ min_btn.onclick = function () {
     console.log("min");
 }
 editor.on("change", function () {
-    if(!preview_mode){
+    if (!preview_mode) {
         renderNormMD();
-    }else{
+    } else {
         renderPreMD();
-        
+
         showPage(cur_page, cur_page);
     }
 });
@@ -217,3 +221,16 @@ window.addEventListener('resize', function (e) {
     $("#right_panel").width(right_panel_width);
     resizeHolder();
 })
+
+const ipc = require('electron').ipcRenderer;
+
+$("#pres_play_btn").click(function (event) {
+    let Data = {
+        md: editor.getValue(),
+        origin_font_size: origin_size,
+        origin_page_width: origin_page_width
+    };
+
+    ipc.send('pres-show', Data);
+});
+

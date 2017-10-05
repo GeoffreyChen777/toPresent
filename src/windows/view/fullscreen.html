@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>toPresent</title>
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <link href="../styles/presmode.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <link href="../styles/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body style="background-color:black; text-align:center">
+    <div id="pres_show">
+
+    </div>
+</body>
+
+<script src="../../../src/windows/controllers/prestylectl.js"></script>
+<script type="text/javascript">
+    w_width = $(document).width();
+    w_height = $(document).height();
+    if (w_width > w_height) {
+        if (w_height / w_width < 0.75) {
+            $("#pres_show").width(1.25 * w_height);
+            $("#pres_show").height(w_height);
+        } else {
+            $("#pres_show").width(w_width);
+            $("#pres_show").height(0.75 * w_width);
+        }
+    } else {
+        if (w_height / w_width < 1.25) {
+            $("#pres_show").width(1.25 * w_height);
+            $("#pres_show").height(w_height);
+        } else {
+            $("#pres_show").width(w_width);
+            $("#pres_show").height(0.75 * w_width);
+        }
+    }
+
+    const {
+        remote
+    } = require('electron')
+    var ipcRenderer = require('electron').ipcRenderer;
+
+
+    ipcRenderer.on('pres-data', (event, arg) => {
+        var data = arg;
+        console.log(arg);
+        var pres_marked = require('marked');
+
+        var pres_renderer = new pres_marked.Renderer();
+
+        pres_renderer.heading = function (text, level, raw) {
+            if (level == 1 && text == "ps") {
+                return "<page>"
+            }
+            if (level == 1 && text == "sp") {
+                return "</page><page>"
+            }
+            if (level == 1 && text == "pe") {
+                return "</page>"
+            }
+            if (level == 1 && (text == "/ps" || text == "/ps" || text == "/ps")) {
+                return '<h' +
+                    level +
+                    ' id="' +
+                    this.options.headerPrefix +
+                    raw.toLowerCase().replace(/[^\w]+/g, '-') +
+                    '">' +
+                    text.replace("/", "") +
+                    '</h' +
+                    level +
+                    '>\n';
+            }
+            return '<h' +
+                level +
+                ' id="' +
+                this.options.headerPrefix +
+                raw.toLowerCase().replace(/[^\w]+/g, '-') +
+                '">' +
+                text +
+                '</h' +
+                level +
+                '>\n';
+        };
+        pres_marked.setOptions({
+            renderer: pres_renderer,
+            gfm: true,
+            tables: true,
+            breaks: false,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
+        });
+
+        $("#pres_show").empty();
+
+        var cur_page = 0;
+        var max_page = 0;
+        document.getElementById('pres_show').innerHTML = pres_marked(data.md);
+
+        scaleFont($("#pres_show").width() / data.origin_page_width, data.origin_font_size);
+
+        function setPageNum() {
+            var pagenum = 0;
+            $('#pres_show > page').each(function () {
+                $(this).attr('id', 'page' + pagenum);
+                pagenum++;
+            });
+            max_page = pagenum - 1;
+        }
+
+        function showPage(old_page_num, new_page_num) {
+            if (new_page_num < 0)
+                new_page_num = 0;
+            if (new_page_num > max_page)
+                new_page_num = max_page;
+            $("#page" + old_page_num).css("visibility", "hidden");
+            $("#page" + new_page_num).css("visibility", "visible");
+            cur_page = new_page_num;
+        }
+
+        function setPresKeyEvent() {
+            $(document).on('keydown', function (event) {
+                var keyNum = event.which; //获取键值
+                console.log(keyNum);
+                switch (keyNum) { //判断按键
+                    case 37:
+                        {
+                            console.log(cur_page);
+                            showPage(cur_page, cur_page - 1);
+                            break;
+                        }
+                    case 38:
+                        {
+                            console.log(cur_page);
+                            showPage(cur_page, cur_page - 1);
+                            break;
+                        }
+                    case 39:
+                        {
+                            console.log(cur_page);
+                            showPage(cur_page, cur_page + 1);
+                            break;
+                        }
+                    case 40:
+                        {
+
+                            console.log(cur_page);
+                            showPage(cur_page, cur_page + 1);
+                            break;
+                        }
+                    case 27:
+                    case 96:
+                        ipcRenderer.send('hide-pres');
+                        break;
+                    default:
+                        break;
+
+                }
+            });
+        }
+        setPageNum();
+
+        showPage(0, 0);
+
+        setPresKeyEvent();
+    });
+</script>
+
+</html>

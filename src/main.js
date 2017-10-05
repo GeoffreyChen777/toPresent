@@ -1,14 +1,22 @@
-const { app, BrowserWindow } = require('electron')
+const {
+    app,
+    BrowserWindow
+} = require('electron')
 const path = require('path')
 const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+const ipc = require('electron').ipcMain;
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({ width: 1024, height: 768, frame: false})
+    win = new BrowserWindow({
+        width: 1024,
+        height: 768,
+        frame: false
+    })
 
     // and load the index.html of the app.
     win.loadURL(url.format({
@@ -21,12 +29,34 @@ function createWindow() {
     win.webContents.openDevTools()
     win.setMenu(null);
     // Emitted when the window is closed.
+
+
+    var presWindow = new BrowserWindow({
+        width: 300,
+        height: 300,
+        show: false,
+        frame: false,
+    })
+
+    presWindow.setFullScreen(true);
+    presWindow.webContents.openDevTools()
+    presWindow.loadURL(__dirname + './windows/view/fullscreen.html') //新窗口
+
+    ipc.on('pres-show', (event, arg) => {
+        presWindow.show();
+        presWindow.webContents.send('pres-data', arg);
+    })
+
+    ipc.on('hide-pres', function () {
+        presWindow.hide()
+    })
     win.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         win = null
-    })
+        presWindow = null
+    });
 }
 
 // This method will be called when Electron has finished
