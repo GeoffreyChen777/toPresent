@@ -61,102 +61,12 @@
 
 <script type="text/javascript">
     SimpleSwitch.init();
-    var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {
-        mode: "markdown",
-        lineNumbers: true,
-        theme: "neo",
-        lineWrapping: "true",
-        scrollbarStyle: "simple"
-    });
-
-    var marked = require('marked');
-
-
-    var pres_renderer = new marked.Renderer();
-    var norm_renderer = new marked.Renderer();
-
-    norm_renderer.heading = function (text, level, raw) {
-        if (level == 1 && text == "ps") {
-            return ""
-        }
-        if (level == 1 && text == "sp") {
-            return "<hr></hr>"
-        }
-        if (level == 1 && text == "pe") {
-            return ""
-        }
-        if (level == 1 && (text == "/ps" || text == "/ps" || text == "/ps")) {
-            return '<h' +
-                level +
-                ' id="' +
-                this.options.headerPrefix +
-                raw.toLowerCase().replace(/[^\w]+/g, '-') +
-                '">' +
-                text.replace("/", "") +
-                '</h' +
-                level +
-                '>\n';
-        }
-        return '<h' +
-            level +
-            ' id="' +
-            this.options.headerPrefix +
-            raw.toLowerCase().replace(/[^\w]+/g, '-') +
-            '">' +
-            text +
-            '</h' +
-            level +
-            '>\n';
-    };
-
-    pres_renderer.heading = function (text, level, raw) {
-        if (level == 1 && text == "ps") {
-            return "<page>"
-        }
-        if (level == 1 && text == "sp") {
-            return "</page><page>"
-        }
-        if (level == 1 && text == "pe") {
-            return "</page>"
-        }
-        if (level == 1 && (text == "/ps" || text == "/ps" || text == "/ps")) {
-            return '<h' +
-                level +
-                ' id="' +
-                this.options.headerPrefix +
-                raw.toLowerCase().replace(/[^\w]+/g, '-') +
-                '">' +
-                text.replace("/", "") +
-                '</h' +
-                level +
-                '>\n';
-        }
-        return '<h' +
-            level +
-            ' id="' +
-            this.options.headerPrefix +
-            raw.toLowerCase().replace(/[^\w]+/g, '-') +
-            '">' +
-            text +
-            '</h' +
-            level +
-            '>\n';
-    };
-    marked.setOptions({
-        renderer: norm_renderer,
-        gfm: true,
-        tables: true,
-        breaks: false,
-        pedantic: false,
-        sanitize: false,
-        smartLists: true,
-        smartypants: false
-    });
     const {
         remote
     } = require('electron')
 </script>
-<script src="../../../src/windows/controllers/prestylectl.js"></script>
+<script src="../../../src/windows/controllers/Normmd.js"></script>
+<script src="../../../src/windows/controllers/Present.js"></script>
 <script src="../../../src/windows/controllers/windowsctl.js"></script>
 
 </html>

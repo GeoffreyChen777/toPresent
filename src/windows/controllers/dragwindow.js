@@ -33,7 +33,7 @@ function drag() {
                 right_width = main_panel_w - left_width;
                 document.getElementById("left_panel").style.width = left_width + "px";
                 document.getElementById("right_panel").style.width = right_width + "px";
-                resizeHolder();
+                present.onPresResize();
                 
             }
         }, 5);
