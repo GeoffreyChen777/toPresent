@@ -1,7 +1,7 @@
 {
   "name": "toPresent",
   "version": "0.0.1",
-  "author": "GeoffreyChen",
+  "author": "GeoffreyChen, OUC <geoffreychen777@gmail.com>",
   "main": "src/main.js",
   "scripts": {
     "start": "electron src/main.js"
@@ -17,6 +17,10 @@
     "win": {
       "icon" : "assets/icon_h.ico",
       "target": ["portable","nsis"]
+    },
+    "linux": {
+      "icon" : "assets/linux_icon/",
+      "target": ["deb"]
     }
   }
 }
