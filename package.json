@@ -1,6 +1,7 @@
 {
   "name": "toPresent",
   "version": "0.0.1",
+  "author": "GeoffreyChen",
   "main": "src/main.js",
   "scripts": {
     "start": "electron src/main.js"
@@ -12,22 +13,10 @@
     "electron": "1.7.8"
   },
   "build": {
-    "appId": "com.geo.toPresent", //包名
-    "copyright": "GEO", //版权
-    "productName": "toPresent", //项目名
-    "dmg": {
-      "background": "res/background.png", //背景图片路径
-      "window": {
-        //窗口左上角起始坐标
-        "x": 100,
-        "y": 100,
-        //窗口大小
-        "width": 1024,
-        "height": 768
-      }
-    },
+    "appId": "com.geo.topresent",
     "win": {
-      "icon": "assets/icon.ico" //图标路径
+      "icon" : "assets/icon_h.ico",
+      "target": ["portable","nsis"]
     }
   }
 }

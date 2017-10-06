@@ -11,20 +11,6 @@ let win, presWindow;
 const ipc = require('electron').ipcMain;
 const dialog = require('electron').dialog
 
-function createPresWindow() {
-    var presWindow = new BrowserWindow({
-        width: 300,
-        height: 300,
-        show: false,
-        frame: false,
-    })
-
-    presWindow.setFullScreen(true);
-    presWindow.webContents.openDevTools()
-    presWindow.loadURL(__dirname + './windows/view/fullscreen.html') //新窗口
-    return presWindow;
-}
-
 function bindCloseMethod(win) {
     win.on('closed', () => {
         // Dereference the window object, usually you would store windows
@@ -39,28 +25,34 @@ function createWindow() {
     win = new BrowserWindow({
         width: 1024,
         height: 768,
-        frame: false,
-        icon: path.join(__dirname, "../assets/icon.ico")
+        frame: false
     })
 
+    presWindow = new BrowserWindow({
+        width: 300,
+        height: 300,
+        show: false,
+        frame: false
+    })
+    presWindow.setFullScreen(true);
+    presWindow.loadURL(url.format({
+        pathname: path.join(__dirname + '/windows/view/fullscreen.html'),
+        protocol: 'file:',
+        slashes: true   
+    }))
     // and load the index.html of the app.
     win.loadURL(url.format({
-        pathname: path.join(__dirname, './windows/view/index.html'),
+        pathname: path.join(__dirname, '/windows/view/index.html'),
         protocol: 'file:',
         slashes: true
     }))
 
-    // Open the DevTools.
-    win.webContents.openDevTools()
     win.setMenu(null);
     // Emitted when the window is closed.
 
-    presWindow = createPresWindow();
+
 
     ipc.on('pres-show', (event, arg) => {
-        if (presWindow == null) {
-            presWindow = createPresWindow();
-        }
         bindCloseMethod(presWindow);
         presWindow.show();
         presWindow.webContents.send('pres-data', arg);
