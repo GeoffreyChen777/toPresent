@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../../../src/lib/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="../../../src/lib/codemirror/theme/neo.css">
     <script src="../../../src/lib/codemirror/addon/scroll/simplescrollbars.js"></script>
+    <script src="../../../src/lib/codemirror/addon/search/searchcursor.js"></script>
     <link rel="stylesheet" href="../../../src/lib/codemirror/addon/scroll/simplescrollbars.css">
     <script src="../../../src/lib/codemirror/mode/markdown/markdown.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
@@ -24,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="../../../src/lib/switcher/htmleaf-demo.css">
     <link rel="stylesheet" type="text/css" href="../../../src/lib/switcher/SimpleSwitch.css" />
     <script type="text/javascript" src="../../../src/lib/switcher/SimpleSwitch.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../src/lib/menu/jquery.popuplayer.min.css" />
+    <script type="text/javascript" src="../../../src/lib/menu/jquery.popuplayer.min.js"></script>
 
 </head>
 
@@ -49,10 +52,13 @@
             </div>
             <div id="md_preview" class="scrollstyle"></div>
             <div id="preview_mode_box">
-                <input type="checkbox" data-type="simple-switch" data-material="true" />
+                <div id="preview_mode_center">
+                    <input type="checkbox" data-type="simple-switch" data-material="true" />
+                </div>
                 <div id="pres_play_box">
                     <div id="pres_play_btn"></div>
                 </div>
+
             </div>
         </div>
     </div>

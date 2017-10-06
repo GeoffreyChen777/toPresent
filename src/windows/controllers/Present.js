@@ -1,5 +1,7 @@
-function Present(init_box, pres_box, md_pre) {
+function Present(init_box, pres_box, md_pre, editor) {
     // Constructor
+    this.editor = editor;
+
     this.orinSize = new Object();
     var h1 = $("<page><h1>1</h1></page>");
     init_box.append(h1);
@@ -32,6 +34,10 @@ function Present(init_box, pres_box, md_pre) {
 
     this.pres_marked = require('marked');
     this.pres_renderer = new this.pres_marked.Renderer();
+
+    this.pageIndex = new Array();
+
+    this.preview_mode = false;
     //==============================================================================================
 
     // return width of presentation box.
@@ -121,8 +127,31 @@ function Present(init_box, pres_box, md_pre) {
     this.createPresRenderer();
     this.createPresMarked();
 
+    // Create page index
+    this.createPageIndex = function () {
+        this.pageIndex.splice(0, this.pageIndex.length);
+        var startcursor = this.editor.getSearchCursor("# ps");
+        if (startcursor.findNext()) {
+            var page = new Object();
+            var from = startcursor.from();
+            page.line = from.line;
+            this.pageIndex.push(page);
+        }
+        else{
+            return false;
+        }
+        var pagecursor = this.editor.getSearchCursor("# sp");
+        while (pagecursor.findNext()) {
+            var page = new Object();
+            var from = pagecursor.from();
+            page.line = from.line;
+            this.pageIndex.push(page);
+        }
+    }
+
     // Render Presentation by markdown
-    this.renderPrebyMD = function (md_string) {
+    this.renderPrebyMD = function () {
+        this.createPageIndex();
         this.md_preview.empty();
         var $pres_box = $("<div id='pres_box'></div>");
         var $holder_box = $("<div id='holder_box'></div>");
@@ -131,7 +160,7 @@ function Present(init_box, pres_box, md_pre) {
         this.pres_marked.setOptions({
             renderer: this.pres_renderer
         })
-        $("#pres_box").html(this.pres_marked(md_string));
+        $("#pres_box").html(this.pres_marked(this.editor.getValue()));
 
         var pagenum = 0;
         $('#pres_box > page').each(function () {
@@ -146,6 +175,9 @@ function Present(init_box, pres_box, md_pre) {
 
     // Show page by pagenum
     this.showPage = function (old_page_num, new_page_num) {
+        if(old_page_num == -1){
+            old_page_num = this.cur_page;
+        }
         if (new_page_num < 0)
             new_page_num = 0;
         if (new_page_num > this.max_page)
@@ -155,15 +187,15 @@ function Present(init_box, pres_box, md_pre) {
         this.cur_page = new_page_num;
     }
 
-    this.hasPage = function(md_string){
+    this.hasPage = function (md_string) {
         this.pres_marked.setOptions({
             renderer: this.pres_renderer
         })
         var html = $(this.pres_marked(md_string));
         console.log(html);
-        if(html.find('page').length){
+        if (html.is('page')) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

@@ -9,6 +9,7 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let win, presWindow;
 const ipc = require('electron').ipcMain;
+const dialog = require('electron').dialog
 
 function createPresWindow() {
     var presWindow = new BrowserWindow({
@@ -24,7 +25,7 @@ function createPresWindow() {
     return presWindow;
 }
 
-function bindCloseMethod(win){
+function bindCloseMethod(win) {
     win.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
@@ -38,7 +39,8 @@ function createWindow() {
     win = new BrowserWindow({
         width: 1024,
         height: 768,
-        frame: false
+        frame: false,
+        icon: path.join(__dirname, "../assets/icon.ico")
     })
 
     // and load the index.html of the app.
@@ -68,7 +70,42 @@ function createWindow() {
         presWindow.hide()
     })
 
-    
+    ipc.on('open-file-dialog', function (event) {
+        dialog.showOpenDialog({
+            filters: [{
+                name: 'markdown',
+                extensions: ['md']
+            }],
+            properties: ['openFile']
+        }, function (files) {
+            if (files) event.sender.send('selected-directory', files)
+        })
+    })
+
+    ipc.on('open-if-save-dialog', function (event) {
+        const options = {
+            type: 'info',
+            title: 'Save or not',
+            message: "You have not saved your changes yet, save it?",
+            buttons: ['Save', 'Exit']
+        }
+        dialog.showMessageBox(options, function (index) {
+            event.sender.send('if-save-dialog-selection', index)
+        })
+    })
+
+    ipc.on('save-dialog', function (event) {
+        const options = {
+            title: 'Save Markdown',
+            filters: [{
+                name: 'name',
+                extensions: ['md']
+            }]
+        }
+        dialog.showSaveDialog(options, function (filename) {
+            event.sender.send('saved-file', filename)
+        })
+    })
 
     win.on('closed', () => {
         // Dereference the window object, usually you would store windows
