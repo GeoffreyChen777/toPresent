@@ -27,7 +27,6 @@ function createWindow() {
         height: 768,
         frame: false
     })
-
     presWindow = new BrowserWindow({
         width: 300,
         height: 300,

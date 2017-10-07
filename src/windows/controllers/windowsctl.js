@@ -6,6 +6,8 @@ window.onload = function () {
     drag();
 }
 
+ipc.send('hide-pres');
+
 var save_flag;
 var origin_file_path = "";
 var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {

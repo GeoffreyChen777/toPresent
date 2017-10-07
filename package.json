@@ -15,12 +15,23 @@
   "build": {
     "appId": "com.geo.topresent",
     "win": {
-      "icon" : "assets/icon_h.ico",
-      "target": ["portable","nsis"]
+      "icon": "assets/icon_h.ico",
+      "target": [
+        "portable",
+        "nsis"
+      ]
     },
     "linux": {
-      "icon" : "assets/linux_icon/",
-      "target": ["deb"]
+      "icon": "assets/linux_icon/",
+      "target": [
+        "deb"
+      ]
+    },
+    "mac": {
+      "icon": "assets/icon_mac.icns",
+      "target": [
+        "dmg"
+      ]
     }
   }
 }
