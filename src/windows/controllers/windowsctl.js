@@ -6,8 +6,6 @@ window.onload = function () {
     drag();
 }
 
-ipc.send('hide-pres');
-
 var save_flag;
 var origin_file_path = "";
 var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {
@@ -207,7 +205,8 @@ var menu = $("#menu_btn").PopupLayer({
     backgroundColor: "#fff",
     content: "<div id='menu_title'>TO PRESENT</div><div id='menu_box'>\
     <div class='menu_item' id='open_file'>Open File</div>\
-    <div class='menu_item' id='save_file'>Save File</div></div>"
+    <div class='menu_item' id='save_file'>Save File</div>\
+    <div class='menu_item' id='export_html'>Export HTML</div></div>"
 });
 
 $("#open_file").click(function () {
@@ -223,6 +222,9 @@ $("#save_file").click(function () {
     $(".popup-layer").click();
 });
 
+$("#export_html").click(function () {
+        
+});
 
 ipc.on('selected-directory', function (event, path) {
     fs.readFile(path[0], function (err, data) {

@@ -27,38 +27,41 @@ function createWindow() {
         height: 768,
         frame: false
     })
-    presWindow = new BrowserWindow({
-        width: 300,
-        height: 300,
-        show: false,
-        frame: false
-    })
-    presWindow.setFullScreen(true);
-    presWindow.loadURL(url.format({
-        pathname: path.join(__dirname + '/windows/view/fullscreen.html'),
-        protocol: 'file:',
-        slashes: true   
-    }))
-    // and load the index.html of the app.
+
     win.loadURL(url.format({
         pathname: path.join(__dirname, '/windows/view/index.html'),
         protocol: 'file:',
         slashes: true
     }))
 
+
     win.setMenu(null);
     // Emitted when the window is closed.
 
+    presWindow = new BrowserWindow({
+        width: 300,
+        height: 300,
+        show: false,
+        frame: false
+    })
 
+    // win.webContents.openDevTools();
 
+    // presWindow.webContents.openDevTools();
     ipc.on('pres-show', (event, arg) => {
+        presWindow.loadURL(url.format({
+            pathname: path.join(__dirname + '/windows/view/fullscreen.html'),
+            protocol: 'file:',
+            slashes: true   
+        }));
+        presWindow.setFullScreen(true);
         bindCloseMethod(presWindow);
         presWindow.show();
         presWindow.webContents.send('pres-data', arg);
     })
 
     ipc.on('hide-pres', function () {
-        presWindow.hide()
+        presWindow.hide();
     })
 
     ipc.on('open-file-dialog', function (event) {
