@@ -36,26 +36,25 @@ function createWindow() {
 
 
     win.setMenu(null);
-    // Emitted when the window is closed.
 
     presWindow = new BrowserWindow({
         width: 300,
         height: 300,
-        show: false,
-        frame: false
-    })
-
+        frame: false,
+        show: false
+    });
+    presWindow.loadURL(url.format({
+        pathname: path.join(__dirname + '/windows/view/fullscreen.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
     // win.webContents.openDevTools();
 
-    // presWindow.webContents.openDevTools();
+    presWindow.webContents.openDevTools();
+    
     ipc.on('pres-show', (event, arg) => {
-        presWindow.loadURL(url.format({
-            pathname: path.join(__dirname + '/windows/view/fullscreen.html'),
-            protocol: 'file:',
-            slashes: true   
-        }));
-        presWindow.setFullScreen(true);
         bindCloseMethod(presWindow);
+        presWindow.setFullScreen(true);
         presWindow.show();
         presWindow.webContents.send('pres-data', arg);
     })

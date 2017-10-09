@@ -23,27 +23,6 @@
 </body>
 
 <script type="text/javascript">
-    w_width = $(document).width();
-    w_height = $(document).height();
-    if (w_width > w_height) {
-        if (w_height / w_width < 0.75) {
-            $("#pres_show").width(1.33 * w_height);
-            $("#pres_show").height(w_height);
-            console.log("WH"+w_height);
-        } else {
-            $("#pres_show").width(w_width);
-            $("#pres_show").height(0.75 * w_width);
-        }
-    } else {
-        if (w_height / w_width < 1.33) {
-            $("#pres_show").width(1.33 * w_height);
-            $("#pres_show").height(w_height);
-        } else {
-            $("#pres_show").width(w_width);
-            $("#pres_show").height(0.75 * w_width);
-        }
-    }
-
     const {
         remote
     } = require('electron')
@@ -51,6 +30,28 @@
 
 
     ipcRenderer.on('pres-data', (event, arg) => {
+
+        w_width = $(document).width();
+        w_height = $(document).height();
+        if (w_width > w_height) {
+            if (w_height / w_width < 0.75) {
+                $("#pres_show").width(1.33 * w_height);
+                $("#pres_show").height(w_height);
+                console.log("WH" + w_height);
+            } else {
+                $("#pres_show").width(w_width);
+                $("#pres_show").height(0.75 * w_width);
+            }
+        } else {
+            if (w_height / w_width < 1.33) {
+                $("#pres_show").width(1.33 * w_height);
+                $("#pres_show").height(w_height);
+            } else {
+                $("#pres_show").width(w_width);
+                $("#pres_show").height(0.75 * w_width);
+            }
+        }
+
         var data = arg;
 
         console.log(arg);
