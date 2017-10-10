@@ -47,7 +47,7 @@ function Present(init_box, pres_box, md_pre, editor) {
 
     // return origin prestention style size.
     this.getOriPresSize = function () {
-        return this.orin_pres_width;
+        return this.orinSize;
     };
 
     //scale presentation font.
@@ -136,8 +136,7 @@ function Present(init_box, pres_box, md_pre, editor) {
             var from = startcursor.from();
             page.line = from.line;
             this.pageIndex.push(page);
-        }
-        else{
+        } else {
             return false;
         }
         var pagecursor = this.editor.getSearchCursor("# sp");
@@ -175,7 +174,7 @@ function Present(init_box, pres_box, md_pre, editor) {
 
     // Show page by pagenum
     this.showPage = function (old_page_num, new_page_num) {
-        if(old_page_num == -1){
+        if (old_page_num == -1) {
             old_page_num = this.cur_page;
         }
         if (new_page_num < 0)
@@ -200,5 +199,11 @@ function Present(init_box, pres_box, md_pre, editor) {
         }
     }
 
+    this.getPageHTML = function () {
+        this.pres_marked.setOptions({
+            renderer: this.pres_renderer
+        });
+        return this.pres_marked(this.editor.getValue());
+    }
 
 };

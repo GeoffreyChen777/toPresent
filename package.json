@@ -24,7 +24,7 @@
     "linux": {
       "icon": "assets/linux_icon/",
       "target": [
-        "deb"
+        "AppImage"
       ]
     },
     "mac": {

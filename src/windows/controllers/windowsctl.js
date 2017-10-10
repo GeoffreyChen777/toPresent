@@ -1,4 +1,4 @@
-const path = require('path');
+const path_tool = require('path');
 const url = require('url');
 const ipc = require('electron').ipcRenderer;
 const fs = require("fs");
@@ -37,7 +37,7 @@ close_btn.click(function () {
         remote.BrowserWindow.getFocusedWindow().close();
     } else {
         ifExit = true;
-        ipc.send('open-if-save-dialog');
+        ipc.send('exit-if-save-dialog');
     }
 
     save_flag = editor.changeGeneration();
@@ -196,6 +196,11 @@ $("#pres_play_btn").click(function (event) {
     }
 });
 
+$("#setting_btn").click(function (event) {
+    console.log(remote.app.getPath('userData'));
+    ipc.send('css_setting-show');
+});
+
 var menu = $("#menu_btn").PopupLayer({
     to: 'right',
     blur: true,
@@ -210,7 +215,11 @@ var menu = $("#menu_btn").PopupLayer({
 });
 
 $("#open_file").click(function () {
-    ipc.send('open-file-dialog');
+    if (editor.isClean(save_flag)) {
+        ipc.send('open-file-dialog');
+    } else {
+        ipc.send('open-if-save-dialog');
+    }
 });
 
 $("#save_file").click(function () {
@@ -223,7 +232,7 @@ $("#save_file").click(function () {
 });
 
 $("#export_html").click(function () {
-        
+    ipc.send('export-html-dialog');
 });
 
 ipc.on('selected-directory', function (event, path) {
@@ -239,7 +248,7 @@ ipc.on('selected-directory', function (event, path) {
     origin_file_path = path[0];
 });
 
-ipc.on('if-save-dialog-selection', function (event, index) {
+ipc.on('exit-if-save-dialog-selection', function (event, index) {
     if (index === 0) {
         if (origin_file_path != "") {
             saveFile(origin_file_path, editor.getValue());
@@ -252,9 +261,46 @@ ipc.on('if-save-dialog-selection', function (event, index) {
     }
 });
 
+ipc.on('open-if-save-dialog-selection', function (event, index) {
+    if (index === 0) {
+        if (origin_file_path != "") {
+            saveFile(origin_file_path, editor.getValue());
+            if (ifExit) remote.BrowserWindow.getFocusedWindow().close();
+        } else {
+            ipc.send('save-dialog');
+        }
+    } else {
+        ipc.send('open-file-dialog');
+    }
+});
+
 ipc.on('saved-file', function (event, path) {
     if (!path) path = './.md.md'
-    console.log(path);
     saveFile(path, editor.getValue());
     if (ifExit) remote.BrowserWindow.getFocusedWindow().close();
+});
+
+ipc.on('export-html-file', function (event, path) {
+    if (!path) path = './.html.html'
+
+    page_html = present.getPageHTML();
+    tmpl_path = path_tool.join(__dirname + '/../exporttmpl/html/htmltempl.html');
+    console.log(tmpl_path);
+    fs.readFile(tmpl_path, function (err, data) {
+        if (err) {
+            return console.error(err);
+        }
+
+        var html_tmpl = data.toString();
+        html = html_tmpl
+            .replace("$PAGE$", page_html)
+            .replace("$H1$", ori_pres_style.h1)
+            .replace("$H2$", ori_pres_style.h2)
+            .replace("$H3$", ori_pres_style.h3)
+            .replace("$P$", ori_pres_style.p)
+            .replace("$LI$", ori_pres_style.li)
+            .replace("$ORIGIN_WIDTH$", origin_page_width);
+
+        fs.writeFileSync(path, html);
+    });
 })
