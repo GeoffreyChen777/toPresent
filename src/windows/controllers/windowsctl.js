@@ -6,6 +6,7 @@ window.onload = function () {
     drag();
 }
 
+var custom_css_path;
 var save_flag;
 var origin_file_path = "";
 var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {
@@ -304,3 +305,15 @@ ipc.on('export-html-file', function (event, path) {
         fs.writeFileSync(path, html);
     });
 })
+
+ipc.on('send_css_setting_path', function (event, path) {
+    custom_css_path = path;
+    $('#pres_css').remove();
+    $("#custom_pres_css").empty();
+    fs.readFile(path, "utf-8", function (error, data) {
+        if (!error) {
+            var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
+            $("#custom_pres_css").html(formatedData)
+        }
+    })
+});

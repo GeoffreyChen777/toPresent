@@ -29,6 +29,32 @@
 </body>
 
 <script type="text/javascript">
+
+var ipc = require('electron').ipcRenderer;
+var css_path;
+
+$('#file_btn').click(function(){
+    ipc.send('open-css-dialog');
+})
+
+$('#cancel_btn').click(function(){
+
+    ipc.send('hide-css_setting');
+})
+
+$('#apply_btn').click(function(){
+    if(css_path){
+        console.log('apply');
+        ipc.send('css_setting_path', css_path);
+    }
+    ipc.send('hide-css_setting');
+})
+
+ipc.on('selected-css-file', function (event, path) {
+    $('#file_label').html(path[0])
+    css_path = path[0];
+});
+
 </script>
 
 </html>

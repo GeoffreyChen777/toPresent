@@ -41,6 +41,12 @@ body {
     border: 1px solid;
     width: calc(100% - 80px);
     float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 30px;
 }
 
 #file_btn {

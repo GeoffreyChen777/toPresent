@@ -48,7 +48,7 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }));
-    
+
     css_setting_win = new BrowserWindow({
         width: 450,
         height: 300,
@@ -64,7 +64,7 @@ function createWindow() {
     win.webContents.openDevTools();
 
     //pres_win.webContents.openDevTools();
-    
+
     css_setting_win.webContents.openDevTools();
     ipc.on('pres-show', (event, arg) => {
         pres_win.setFullScreen(true);
@@ -83,6 +83,16 @@ function createWindow() {
     ipc.on('hide-css_setting', function () {
         css_setting_win.hide();
     })
+
+    ipc.on('css_setting_path', (event, arg) => {
+        win.webContents.send('send_css_setting_path', arg);
+    })
+
+    ipc.on('add-css', (event, arg) => {
+
+        win.webContents.insertCSS(arg);
+    })
+
     ipc.on('open-file-dialog', function (event) {
         dialog.showOpenDialog({
             filters: [{
@@ -92,6 +102,18 @@ function createWindow() {
             properties: ['openFile']
         }, function (files) {
             if (files) event.sender.send('selected-directory', files)
+        })
+    })
+
+    ipc.on('open-css-dialog', function (event) {
+        dialog.showOpenDialog({
+            filters: [{
+                name: 'CSS',
+                extensions: ['css']
+            }],
+            properties: ['openFile']
+        }, function (files) {
+            if (files) event.sender.send('selected-css-file', files)
         })
     })
 
@@ -146,7 +168,7 @@ function createWindow() {
     })
 
 
-    
+
     win.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
