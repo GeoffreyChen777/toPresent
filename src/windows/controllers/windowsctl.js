@@ -6,7 +6,25 @@ window.onload = function () {
     drag();
 }
 
-var custom_css_path;
+var custom_css_path = "";
+let configDir = remote.app.getPath('userData');
+console.log(configDir)
+fs.readFile(path_tool.join(configDir, "config.json"), "utf-8", function (error, data) {
+    if (!error) {
+        var config = JSON.parse(data)
+        custom_css_path = config.custom_css_path
+        
+        fs.readFile(custom_css_path, "utf-8", function (error, data) {
+            if (!error) {
+                var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
+                $('#pres_css').remove();
+                $("#custom_pres_css").empty();
+                $("#custom_pres_css").html(formatedData)
+            }
+        })
+    }
+})
+
 var save_flag;
 var origin_file_path = "";
 var editor = CodeMirror.fromTextArea(document.getElementById("md_input"), {
@@ -189,7 +207,8 @@ $("#pres_play_btn").click(function (event) {
         let Data = {
             md: editor.getValue(),
             origin_font_size: present.orinSize,
-            origin_page_width: present.orin_pres_width
+            origin_page_width: present.orin_pres_width,
+            custom_css: custom_css_path
         };
         ipc.send('pres-show', Data);
     } else {
@@ -314,6 +333,11 @@ ipc.on('send_css_setting_path', function (event, path) {
         if (!error) {
             var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
             $("#custom_pres_css").html(formatedData)
+
+            var json_obj = {
+                "custom_css_path": path
+            }
+            fs.writeFileSync(path_tool.join(configDir, "config.json"), JSON.stringify(json_obj))
         }
     })
 });

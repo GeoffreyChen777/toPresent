@@ -63,9 +63,9 @@ function createWindow() {
     }));
     win.webContents.openDevTools();
 
-    //pres_win.webContents.openDevTools();
+    pres_win.webContents.openDevTools();
 
-    css_setting_win.webContents.openDevTools();
+    //css_setting_win.webContents.openDevTools();
     ipc.on('pres-show', (event, arg) => {
         pres_win.setFullScreen(true);
         pres_win.show();
