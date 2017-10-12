@@ -6,7 +6,8 @@ window.onload = function () {
     drag();
 }
 
-var custom_css_path = "";
+var custom_css_path = ""
+var style_string = ""
 let configDir = remote.app.getPath('userData');
 console.log(configDir)
 fs.readFile(path_tool.join(configDir, "config.json"), "utf-8", function (error, data) {
@@ -20,6 +21,7 @@ fs.readFile(path_tool.join(configDir, "config.json"), "utf-8", function (error, 
                 $('#pres_css').remove();
                 $("#custom_pres_css").empty();
                 $("#custom_pres_css").html(formatedData)
+                style_string = formatedData
             }
         })
     }
@@ -313,12 +315,14 @@ ipc.on('export-html-file', function (event, path) {
 
         var html_tmpl = data.toString();
         html = html_tmpl
+            .replace("$STYLE$", style_string)
             .replace("$PAGE$", page_html)
             .replace("$H1$", ori_pres_style.h1)
             .replace("$H2$", ori_pres_style.h2)
             .replace("$H3$", ori_pres_style.h3)
             .replace("$P$", ori_pres_style.p)
             .replace("$LI$", ori_pres_style.li)
+            .replace("$ORIGIN_WIDTH$", origin_page_width)
             .replace("$ORIGIN_WIDTH$", origin_page_width);
 
         fs.writeFileSync(path, html);
@@ -332,6 +336,7 @@ ipc.on('send_css_setting_path', function (event, path) {
     fs.readFile(path, "utf-8", function (error, data) {
         if (!error) {
             var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
+            style_string = formatedData
             $("#custom_pres_css").html(formatedData)
 
             var json_obj = {
