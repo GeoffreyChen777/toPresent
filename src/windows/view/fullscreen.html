@@ -71,14 +71,17 @@
         console.log(arg);
 
         custom_css_path = data.custom_css;
-        $("#default_style").remove();
-        $("#custom_style").empty();
-        fs.readFile(custom_css_path, "utf-8", function (error, data) {
-            if (!error) {
-                var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
-                $("#custom_style").html(formatedData)
-            }
-        })
+        if (custom_css_path != "") {
+            $("#default_style").remove();
+            $("#custom_style").empty();
+
+            fs.readFile(custom_css_path, "utf-8", function (error, data) {
+                if (!error) {
+                    var formatedData = data.replace(/\s{2,10}/g, ' ').trim()
+                    $("#custom_style").html(formatedData)
+                }
+            })
+        }
 
         var pres_marked = require('marked');
 
