@@ -62,6 +62,10 @@
             margin-top: 20%;
         }
 
+        page h4 {
+            font-size: 1em;
+        }
+
         page li {
             font-size: 0.8em;
             line-height: 250%;
@@ -72,10 +76,6 @@
             font-size: 0.65em;
             line-height: 180%;
             text-align: justify;
-        }
-
-        page img {
-            max-width: 80%;
         }
     </style>
     <style id="custom_style" type="text/css">$STYLE$</style>
@@ -3757,6 +3757,8 @@
         $("page>h2").css("font-size", parseFloat("$H2$") * scale + "px");
 
         $("page>h3").css("font-size", parseFloat("$H3$") * scale + "px");
+
+        $("page>h4").css("font-size", parseFloat("$H4$") * scale + "px");
 
         $("page>p").css("font-size", parseFloat("$P$") * scale + "px");
 

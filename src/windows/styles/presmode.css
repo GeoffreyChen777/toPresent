@@ -29,6 +29,10 @@ page h3{
     margin-top: 20%;
 }
 
+page h4{
+    font-size: 1em;
+}
+
 page li{
     font-size: 0.8em;
     line-height: 250%;
@@ -39,8 +43,4 @@ page p{
     font-size: 0.65em;
     line-height: 180%;
     text-align: justify;
-}
-
-page img{
-    max-width: 80%;
 }

@@ -61,7 +61,7 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }));
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
 
     //pres_win.webContents.openDevTools();
 

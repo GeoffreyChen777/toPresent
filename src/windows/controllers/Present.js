@@ -15,6 +15,10 @@ function Present(init_box, pres_box, md_pre, editor) {
     init_box.append(h3);
     this.orinSize.h3 = init_box.find("h3").css("font-size");
 
+    var h4 = $("<page><h4>1</h4></page>");
+    init_box.append(h4);
+    this.orinSize.h4 = init_box.find("h4").css("font-size");
+
     var p = $("<page><p>1</p></page>");
     init_box.append(p);
     this.orinSize.p = init_box.find("p").css("font-size");
@@ -58,6 +62,8 @@ function Present(init_box, pres_box, md_pre, editor) {
         $("page>h2").css("font-size", parseFloat(this.orinSize.h2) * scale + "px");
 
         $("page>h3").css("font-size", parseFloat(this.orinSize.h3) * scale + "px");
+
+        $("page>h4").css("font-size", parseFloat(this.orinSize.h4) * scale + "px");
 
         $("page>p").css("font-size", parseFloat(this.orinSize.p) * scale + "px");
 

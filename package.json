@@ -7,7 +7,8 @@
     "start": "electron src/main.js"
   },
   "dependencies": {
-    "marked": "^0.3.6"
+    "marked": "^0.3.6",
+    "semantic-ui": "^2.2.13"
   },
   "devDependencies": {
     "electron": "1.7.8"
