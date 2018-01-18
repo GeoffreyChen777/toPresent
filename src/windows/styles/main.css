@@ -205,7 +205,7 @@ page{
     padding-bottom: 75%;
     height: 0;
     
-    box-shadow: 0px 0px 15px #BDBDBD;
+    box-shadow: 0px 0px 15px #e4e3e3;
 }
 
 #holder_box{
@@ -213,7 +213,7 @@ page{
     position:relative;
 }
 
-#preview_mode_center {
+#preview_mode_switcher {
     float: right;
     margin-right: 15px;
 }
@@ -265,4 +265,30 @@ page{
 
 .scrollstyle::-webkit-scrollbar-thumb {
     background-color: #C7C7C7;
+}
+
+#pre_setting_box {
+	position: relative;
+    background: #828282;
+    color: #e4e3e3;
+    float: right;
+    margin-right: 10px;
+    margin-top: -4px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+#pre_setting_box:after {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-left-color: #828282;
+	border-width: 5px;
+	margin-top: -5px;
 }

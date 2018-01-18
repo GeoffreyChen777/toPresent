@@ -221,6 +221,7 @@ $("#pres_play_btn").click(function (event) {
 $("#setting_btn").click(function (event) {
     console.log(remote.app.getPath('userData'));
     ipc.send('css_setting-show');
+    
 });
 
 var menu = $("#menu_btn").PopupLayer({
