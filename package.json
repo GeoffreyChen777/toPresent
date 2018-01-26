@@ -1,37 +1,13 @@
 {
-  "name": "toPresent",
-  "version": "0.0.2",
-  "author": "GeoffreyChen, OUC <geoffreychen777@gmail.com>",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron src/main.js"
-  },
   "dependencies": {
-    "marked": "^0.3.12"
-  },
-  "devDependencies": {
-    "electron": "1.7.8"
-  },
-  "build": {
-    "appId": "com.geo.topresent",
-    "win": {
-      "icon": "assets/icon_h.ico",
-      "target": [
-        "portable",
-        "nsis"
-      ]
-    },
-    "linux": {
-      "icon": "assets/linux_icon/",
-      "target": [
-        "AppImage"
-      ]
-    },
-    "mac": {
-      "icon": "assets/icon_mac.icns",
-      "target": [
-        "dmg"
-      ]
-    }
+    "connect": "^3.6.5",
+    "express": "^4.16.2",
+    "formidable": "^1.1.1",
+    "http-server": "^0.11.1",
+    "jade": "^1.11.0",
+    "jquery-file-upload-middleware": "^0.1.8",
+    "marked": "^0.3.12",
+    "mongodb": "^3.0.1",
+    "semantic-ui": "^2.2.13"
   }
 }

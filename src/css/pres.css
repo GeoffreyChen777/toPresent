@@ -1,0 +1,37 @@
+.page{
+    background-color: white;
+    font-family: "PingFangSC-Regular", "微软雅黑";
+}
+
+.page>h1{
+    margin-top: 15%;
+    text-align: center;
+    font-size: 3em;
+}
+
+.page>h2{
+    font-size: 2em;
+}
+
+.page>h3{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin-top: 16%;
+}
+
+.page>h4{
+    font-size: 1.8em;
+}
+
+.page>li{
+    font-size: 1.2em;
+    line-height: 250%;
+}
+
+
+.page>p{
+    font-size: 1em;
+    line-height: 160%;
+    text-align: justify;
+}

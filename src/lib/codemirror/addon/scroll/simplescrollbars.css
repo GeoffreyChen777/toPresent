@@ -24,12 +24,7 @@
 
 .CodeMirror-simplescroll-vertical {
   right: 0; top: 0;
-  width: 2px;
-}
-
-.CodeMirror-simplescroll-vertical:hover{
-  right: 0; top: 0;
-  width: 6px;
+  width: 8px;
 }
 .CodeMirror-simplescroll-vertical div {
   right: 0;
@@ -62,11 +57,6 @@
 }
 
 .CodeMirror-overlayscroll-vertical {
-  right: 0; top: 0;
-  width: 2px;
-}
-
-.CodeMirror-overlayscroll-vertical:hover {
   right: 0; top: 0;
   width: 6px;
 }

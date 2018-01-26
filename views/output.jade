@@ -1,0 +1,199 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title= pageTitle
+        link(rel="stylesheet" href="https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.css")
+        script(src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js")
+        script(src="https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.js")
+
+        style(type='text/css').
+            html,
+            body {
+                height: 100%;
+                font-size: 14px;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: black;
+            }
+        style(type='text/css').
+            #fullscreen_preview {
+                font-family: "pingfangsc-regular", "微软雅黑";
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+
+            #pres_box {
+                box-sizing: border-box;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 0;
+                right: 0;
+                margin: auto;
+            }
+
+            .hperwidth {
+                width: 100%;
+            }
+
+            .hperheight {
+                height: 100%;
+            }
+
+            .page {
+                position: absolute;
+                box-sizing: border-box;
+                background-color: white;
+                width: 100%;
+                height: 100%;
+                display: none;
+            }
+
+            .init_box {
+                display: none;
+            }
+        
+        style(type='text/css')#custom_style !{style}
+        
+    block header 
+
+    body
+        div#fullscreen_preview !{content}
+        div.init_box
+            page.page
+                h1 1
+                h2 1
+                h3 1
+                h4 1
+                p 1
+                li 1
+
+    script.
+        var ratio = "#{ratio}";
+        ratio = parseFloat(ratio);
+        var orin_pres_width = 745;
+
+        max_page = 1;
+        cur_page = 0;
+
+        trans = "#{trans}";
+
+        orinSize = new Object();
+        orinSize.h1 = $(".page>h1").css("font-size");
+        orinSize.h2 = $(".page>h2").css("font-size");
+        orinSize.h3 = $(".page>h3").css("font-size");
+        orinSize.h4 = $(".page>h4").css("font-size");
+        orinSize.p = $(".page>p").css("font-size");
+        orinSize.li = $(".page>li").css("font-size");
+
+        function init_id(){
+            var pagenum = 0;
+            $('#pres_box > page').each(function () {
+                $(this).attr('id', 'page' + pagenum);
+                pagenum++;
+            });
+            max_page = pagenum - 1;
+        }
+
+        function scale_pres() {
+            $("#pres_box").css("width", "");
+            $("#pres_box").css("height", "");
+
+            if ($("body").height() / $("body").width() >= ratio) {
+                $("#pres_box").css("width", "100%");
+                $("#pres_box").height($("body").width() * ratio);
+            }
+            else {
+                $("#pres_box").css("height", "100%");
+                $("#pres_box").width($("body").height() / ratio);
+            }
+        }
+
+        function scale_font() {
+            scale_ratio = $("body").width() / orin_pres_width;
+
+            $(".page>h1").css("font-size", parseFloat(orinSize.h1) * scale_ratio + "px");
+            $(".page>h2").css("font-size", parseFloat(orinSize.h2) * scale_ratio + "px");
+            $(".page>h3").css("font-size", parseFloat(orinSize.h3) * scale_ratio + "px");
+            $(".page>h4").css("font-size", parseFloat(orinSize.h4) * scale_ratio + "px");
+            $(".page>p").css("font-size", parseFloat(orinSize.p) * scale_ratio + "px");
+            $(".page>ul>li").css("font-size", parseFloat(orinSize.li) * scale_ratio + "px");
+        }
+
+        function setPreviewKeyEvent() {
+            $(document).on('keydown', function (event) {
+                var keyNum = event.which;
+                switch (keyNum) {
+                    case 37:
+                        {
+                            changePage(cur_page, cur_page - 1, trans);
+                            break;
+                        }
+                    case 38:
+                        {
+                            changePage(cur_page, cur_page - 1, trans);
+                            break;
+                        }
+                    case 39:
+                        {
+                            changePage(cur_page, cur_page + 1, trans);
+                            break;
+                        }
+                    case 40:
+                        {
+                            changePage(cur_page, cur_page + 1, trans);
+                            break;
+                        }
+                    default:
+                        break;
+
+                }
+            });
+        }
+
+        function pagetrans (page_num, trans_type) {
+            if (trans_type) {
+                $("#page" + page_num).transition(trans_type);
+            }
+            else {
+                console.log("fuck");
+                if ($("#page" + page_num).transition("is visible")) {
+                    $("#page" + page_num).transition("hide");
+                } else {
+                    $("#page" + page_num).transition("show");
+                };
+            }
+        }
+
+        function changePage (old_page_num, new_page_num, trans_type) {
+
+            if (new_page_num < 0 || new_page_num > max_page || old_page_num == new_page_num)
+                return;
+            pagetrans(old_page_num, trans_type)
+            pagetrans(new_page_num, trans_type)
+            cur_page = new_page_num;
+        }
+
+        function showPage (page_num, trans_type){
+            this.pagetrans(page_num, trans_type)
+            $("#page" + page_num).css("display", "block");
+        }
+
+        $(document).ready(function () {
+            scale_pres();
+            scale_font();
+            setPreviewKeyEvent();
+            init_id();
+            showPage(0, null);
+        });
+
+        window.onresize = function () {
+            scale_pres();
+            scale_font();
+        }

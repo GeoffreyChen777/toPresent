@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>toPresent</title>
+
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
+    <script src="./semantic/dist/semantic.min.js"></script>
+    <script src="./src/js/file_uploader.js"></script>
+    <link href="./src/css/main.css" rel="stylesheet" type="text/css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monofett" rel="stylesheet">
+
+    <!-- code mirror -->
+    <script src="./src/lib/codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="./src/lib/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="./src/lib/codemirror/theme/neo.css">
+    <script src="./src/lib/codemirror/addon/scroll/simplescrollbars.js"></script>
+    <link rel="stylesheet" href="./src/lib/codemirror/addon/scroll/simplescrollbars.css">
+    <script src="./src/lib/codemirror/addon/search/searchcursor.js"></script>
+    <script src="./src/lib/codemirror/mode/markdown/markdown.js"></script>
+
+    <!-- marked -->
+    <script src="https://cdn.bootcss.com/marked/0.3.12/marked.js"></script>
+    <style id="pres_css" rel="stylesheet" type="text/css"></style>
+</head>
+
+<body>
+    <div class="editor_bg"></div>
+    <div class="ui modal" id="style_setting_modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Style Setting
+        </div>
+        <div class="ui content_box">
+            <div id="setting-handler-warning-message" class="ui hidden warning floating message">
+                <i class="close icon"></i>
+                <p id="setting-handler-warning-message-content">
+                    Warning Server Message.
+                </p>
+            </div>
+            <div id="setting-handler-positive-message" class="ui hidden positive floating message">
+                <i class="close icon"></i>
+                <p id="setting-handler-positive-message-content">
+                    Positive Server Message.
+                </p>
+            </div>
+            <div class="ui simple accordion">
+                <div class="title active">
+                    <i class="dropdown icon"></i> Page </div>
+                <div class="content active">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Padding</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-page-padding-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Padding</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-page-padding-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Padding</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-page-padding-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Padding</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-page-padding-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Head 1 </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h1-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-h1-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-h1-text-align-left" class="item">left</div>
+                                                    <div id="setting-h1-text-align-center" class="item">center</div>
+                                                    <div id="setting-h1-text-align-right" class="item">right</div>
+                                                    <div id="setting-h1-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h1-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h1-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h1-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h1-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Head 2 </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h2-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-h2-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-h2-text-align-left" class="item">left</div>
+                                                    <div id="setting-h2-text-align-center" class="item">center</div>
+                                                    <div id="setting-h2-text-align-right" class="item">right</div>
+                                                    <div id="setting-h2-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h2-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h2-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h2-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h2-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Head 3 </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h3-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-h3-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-h3-text-align-left" class="item">left</div>
+                                                    <div id="setting-h3-text-align-center" class="item">center</div>
+                                                    <div id="setting-h3-text-align-right" class="item">right</div>
+                                                    <div id="setting-h3-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h3-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h3-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h3-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h3-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Head 4 </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h4-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-h4-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-h4-text-align-left" class="item">left</div>
+                                                    <div id="setting-h4-text-align-center" class="item">center</div>
+                                                    <div id="setting-h4-text-align-right" class="item">right</div>
+                                                    <div id="setting-h4-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h4-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h4-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h4-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-h4-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Paragraph </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Line Hegiht</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-line-height" type="text" placeholder="Enter height..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-p-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-p-text-align-left" class="item">left</div>
+                                                    <div id="setting-p-text-align-center" class="item">center</div>
+                                                    <div id="setting-p-text-align-right" class="item">right</div>
+                                                    <div id="setting-p-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-p-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> List </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Font Size(em)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-font-size" type="text" placeholder="Enter size..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Line Height</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-line-height" type="text" placeholder="Enter height..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Align</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui simple dropdown grey_text">
+                                                <div id="setting-li-text-align" class="inline">left</div>
+                                                <i class="dropdown icon"></i>
+                                                <div class="menu">
+                                                    <div id="setting-li-text-align-left" class="item">left</div>
+                                                    <div id="setting-li-text-align-center" class="item">center</div>
+                                                    <div id="setting-li-text-align-right" class="item">right</div>
+                                                    <div id="setting-li-text-align-justify" class="item">justify</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-li-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i> Image </div>
+                <div class="content">
+                    <div class="ui grid nomargin nopadding">
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Image Scale(per)</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-img-width" type="text" placeholder="Enter scale..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="four column row nomargin nopadding">
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Left Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-img-margin-left" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Right Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-img-margin-right" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Top Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-img-margin-top" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui grid nomargin">
+                                    <div class="one column row">
+                                        <div class="column grey_text">Bottom Margin</div>
+                                    </div>
+                                    <div class="one column row inputbox_row">
+                                        <div class="column">
+                                            <div class="ui right transparent small input grey_text">
+                                                <input id="setting-img-margin-bottom" type="text" placeholder="persent..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+
+            <div class="ui transparent action input">
+                <input id="setting-import-id" type="text" placeholder="Please input id...">
+                <div class="ui buttons">
+                    <button id="setting-import-server-btn" class="ui button">Server</button>
+                    <div class="or"></div>
+                    <button id="setting-import-file-btn" class="ui button">File</button>
+                </div>
+                <input type="file" id="setting-file-import" style="display: none" name="uploads[]" data-url="src" >
+            </div>
+            <div id="setting-export-btn" class="ui button">
+                Export
+            </div>
+            <a id="setting-download-a" class="hidden"></a>
+            <div class="ui black deny button">
+                Cancle
+            </div>
+            <div id="setting-save-btn" class="ui positive right labeled icon button">
+                Save
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="fullscreen_box" id="fullscreen_preview">1</div>
+    <div class="ui top padded inverted attached menu title_bar">
+        <div class="ui icon item">
+            <div class="titleicon">P</div>
+            <div class="titletext">toPresent</div>
+        </div>
+        <div class="ui right menu borderless inverted">
+            <div class="ui dropdown simple icon item">
+                <i class="setting icon"></i>
+                <div class="ui vertical left menu">
+                    <div class="ui dropdown item">
+                        <i class="expand icon"></i> Ratio </a>
+                        <div class="right menu">
+                            <a class="item" id="ratio_sixteenbynine">
+                                <i class="block layout icon"></i> 16:9</a>
+                            <a class="item" id="ratio_fourbythree">
+                                <i class="block layout icon"></i> 4:3</a>
+                        </div>
+                    </div>
+                    <div class="ui dropdown item">
+                        <i class="wizard icon"></i> Transitions </a>
+                        <div class="right menu">
+                            <a class="item" id="transitions_fade">
+                                <i class="wizard icon"></i> Fade</a>
+                            <a class="item" id="transitions_drop">
+                                <i class="wizard icon"></i> Drop</a>
+                            <a class="item" id="transitions_flip">
+                                <i class="wizard icon"></i> Flip</a>
+                        </div>
+                    </div>
+                    <div class="ui dropdown item" id="style_setting_btn">
+                        <i class="font icon"></i> Style Setting
+                    </div>
+                </div>
+            </div>
+            <div class="ui dropdown simple icon title_btn item" id="play_btn">
+                <i class="play icon"></i>
+            </div>
+            <div id="pres_mode" class="ui dropdown simple icon title_btn item">
+                <i id="mode_icon" class="tv icon"></i>
+            </div>
+            <div class="ui dropdown simple icon title_btn item">
+                <i class="ellipsis vertical icon"></i>
+                <div class="menu">
+                    <div id="menu-download-html-btn" class="item">Download HTML</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertically divided grid maingrid">
+        <div class="two column row">
+            <div class="center aligned column input_grid">
+                <textarea id="input_field"></textarea>
+            </div>
+            <div class="center aligned column">
+                <div id="main_preview"></div>
+            </div>
+        </div>
+    </div>
+    <div id="init_size_box"></div>
+</body>
+
+<script type="text/javascript">
+</script>
+<script src="./src/js/normal_renderer.js"></script>
+<script src="./src/js/pres_renderer.js"></script>
+<script src="./src/js/ui_ctl.js"></script>
+<script src="./src/js/init.js"></script>
+<script src="./src/js/key_ctl.js"></script>
+<script src="./src/js/cfg_handler.js"></script>
+<script src="./src/js/content_ctl.js"></script>
+
+</html>

@@ -1,0 +1,66 @@
+{
+    "h1":{
+        "font-size": 2,
+        "text-align": "center",
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": 0.15,
+        "margin-bottom": null
+        
+    },
+    "h2":{
+        "font-size": 2,
+        "text-align": "left",
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": null,
+        "margin-bottom": null
+    },
+    "h3":{
+        "font-size": 1.5,
+        "text-align": "center",
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": 0.16,
+        "margin-bottom": null
+    },
+    "h4":{
+        "font-size": 1.8,
+        "text-align": null,
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": null,
+        "margin-bottom": null
+    },
+    "p":{
+        "font-size": 1,
+        "text-align": "justify",
+        "line-height": 1.6,
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": null,
+        "margin-bottom": null
+    },
+    "li":{
+        "font-size": 1.2,
+        "text-align": "left",
+        "line-height": 2.5,
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": 0.15,
+        "margin-bottom": null
+    },
+    "page":{
+        "padding-left": 0.1,
+        "padding-right": 0.1,
+        "padding-top": 0.05,
+        "padding-bottom": null
+    },
+    "img":{
+        "margin-left": null,
+        "margin-right": null,
+        "margin-top": null,
+        "margin-bottom": null,
+        "text-align": "center"
+    }
+}
