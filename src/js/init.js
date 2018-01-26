@@ -28,3 +28,5 @@ if (document.addEventListener)
     document.addEventListener('fullscreenchange', exitHandler, false);
     document.addEventListener('MSFullscreenChange', exitHandler, false);
 }
+
+$("#welcome_modal").modal("show");
